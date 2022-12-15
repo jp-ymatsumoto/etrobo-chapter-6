@@ -2,6 +2,7 @@
 #include "Scenario.h"
 #include "Walker.h"
 #include "SimpleTimer.h"
+#include "Scene.h"
 
 typedef enum
 {
@@ -12,14 +13,26 @@ typedef enum
 
 static state_t state = UNDEFINED; // 状態
 
+static scene_t scenes[] = {
+    {TURN_LEFT, 3000 / 10, 0},   // 左旋回3秒
+    {GO_STRAIGHT, 1000 / 10, 0}, // 直進1秒
+    {TURN_LEFT, 3000 / 10, 0},   // 左旋回3秒
+    {GO_STRAIGHT, 1000 / 10, 0}  // 直進1秒
+};
+
 /**
  * コンストラクター
  */
 void scenario_tracer_init()
 {
-  scenario_init();
+  scenario_init(0);
   walker_init();
   simple_timer_init();
+
+  for (int i = 0; i < (sizeof(scenes) / sizeof(scene_t)); i++)
+  {
+    scenario_add_scene(&scenes[i]);
+  }
 }
 
 /**
