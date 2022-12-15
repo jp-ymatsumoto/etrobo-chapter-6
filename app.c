@@ -1,6 +1,7 @@
 #include "app.h"
 #include <stdio.h>
 #include "parameters.h"
+#include "ScenarioTracerWithStarter.h"
 
 /**
  * 通常タスクで実行される関数
@@ -13,6 +14,8 @@ void main_task(intptr_t unused)
   // モーターの出力ポートを設定する
   ev3_motor_config(left_motor, MEDIUM_MOTOR);
   ev3_motor_config(right_motor, MEDIUM_MOTOR);
+
+  scenario_tracer_with_starter_init();
 
   // 周期タスクを開始する
   sta_cyc(RUN_TASK_CYC);
@@ -43,22 +46,7 @@ void run_task(intptr_t unused)
     wup_tsk(MAIN_TASK);
   }
 
-  // 反射光の強さを取得する
-  int reflect = ev3_color_sensor_get_reflect(color_sensor);
-  // ターミナルにログを出力する
-  printf("reflect: %3d\n", reflect);
-  if (reflect > 20)
-  {
-    // 右上に前進する
-    ev3_motor_set_power(left_motor, 60);
-    ev3_motor_set_power(right_motor, 30);
-  }
-  else
-  {
-    // 左上に前進する
-    ev3_motor_set_power(left_motor, 30);
-    ev3_motor_set_power(right_motor, 60);
-  }
+  scenario_tracer_with_starter_run();
 
   // タスクを終了する
   ext_tsk();
