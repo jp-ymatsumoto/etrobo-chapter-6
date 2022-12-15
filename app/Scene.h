@@ -9,11 +9,11 @@ typedef enum
   STOP
 } command_t;
 
-typedef struct
+typedef struct scene_tt
 {
   command_t command;
   int time;
-  scene_t *next;
+  struct scene_tt *next;
 } scene_t;
 
 #endif
